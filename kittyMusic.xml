@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE library SYSTEM "library.dtd">
+<library name="kittyMusic" basename="kittyMusicBase" openname="kittymusic.library">
+	<include>exec/types.h</include>
+	<include>libraries/kittyMusic.h</include>
+	<interface name="main" version="1.0" struct="kittyMusicIFace" prefix="_kittymusic_" asmprefix="IkittyMusic" global="IkittyMusic">
+		<method name="Obtain" result="ULONG"/>
+		<method name="Release" result="ULONG"/>
+		<method name="Expunge" result="void" status="unimplemented"/>
+		<method name="Clone" result="struct Interface *" status="unimplemented"/>
+		<method name="makeLookupTable" result="char *">
+		</method>
+		<method name="FreeLookupTable" result="void">
+			<arg name="table" type="void *"/>
+		</method>
+		<method name="makeContext" result="void *">
+		</method>
+		<method name="FreeContext" result="void">
+			<arg name="table" type="void *"/>
+		</method>
+	</interface>
+</library>
+

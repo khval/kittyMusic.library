@@ -1,0 +1,9 @@
+copy /include/#? sdk:Include/include_h/ all
+
+IF EXISTS kittymusic.library
+copy kittymusic.library libs:
+avail flush
+else
+print kittymusic.library not found
+endif
+
