@@ -42,7 +42,9 @@ main_SRCS = main/Obtain.c main/Release.c main/makeLookupTable.c \
 	AmosString.c \
 	stack.c \
 	cmdList.c \
-	ext_music.c
+	ext_music.c \
+	waves.c \
+	wave.c
 
 # -------------------------------------------------------------
 # Nothing should need changing below this line
