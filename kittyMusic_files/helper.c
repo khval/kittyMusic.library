@@ -60,7 +60,7 @@ struct sampleHeader *allocSample( int size )
 	return (struct sampleHeader *) malloc( size );
 }
 
-void setEnval(struct wave *wave, int phase, int duration, int volume)
+#ifdef obsolete
 
 bool apply_wave(struct KittyInstance *instance,struct waves *waves, int waveId, int voices)
 {
@@ -95,3 +95,70 @@ void copy_sample_to_playback_voices(struct KittyInstance *instance, struct sampl
 		}	
 	}
 }
+
+
+#endif
+
+#ifdef debug_waves_yes
+
+void open_debug_window()
+{
+#define IDCMP_COMMON IDCMP_MOUSEBUTTONS | IDCMP_INACTIVEWINDOW | IDCMP_ACTIVEWINDOW  | \
+	IDCMP_CHANGEWINDOW | IDCMP_MOUSEMOVE | IDCMP_REFRESHWINDOW | IDCMP_RAWKEY | \
+	IDCMP_EXTENDEDMOUSE | IDCMP_CLOSEWINDOW | IDCMP_NEWSIZE | IDCMP_INTUITICKS | IDCMP_MENUPICK | IDCMP_GADGETUP
+
+	debug_Window = OpenWindowTags( NULL,
+				WA_Left,			820,
+				WA_Top,			20,
+				WA_InnerWidth,		800,
+				WA_InnerHeight,	800,
+				WA_SimpleRefresh,	TRUE,
+				WA_CloseGadget,	FALSE,
+				WA_DepthGadget,	TRUE,
+				WA_DragBar,		TRUE,
+				WA_Borderless,	FALSE,
+				WA_SizeGadget,	FALSE,
+				WA_SizeBBottom,	TRUE,
+				WA_NewLookMenus,	TRUE,
+				WA_Title, "Debug Window",
+				WA_Activate,        TRUE,
+				WA_Flags, WFLG_RMBTRAP| WFLG_REPORTMOUSE,
+				WA_IDCMP,           IDCMP_COMMON,
+			TAG_DONE);
+}
+
+void close_debug_window()
+{
+	if (debug_Window) CloseWindow(debug_Window);
+	debug_Window = NULL;
+}
+
+void debug_draw_wave(struct wave *wave)
+{
+	unsigned int n;
+	 char *data;
+	data = ( char *) &(wave -> sample.ptr);
+
+	open_debug_window();
+	for (n=0;n<wave -> sample.bytes;n++) 	WritePixelColor( debug_Window -> RPort, 50+n, 400 + data[n] , 0xFF0000FF); 
+	getchar();
+	close_debug_window();
+}
+
+void debug_draw_hline(int x)
+{
+	int y;
+	if (debug_Window)
+	{
+		for (y=-30;y<=30;y++)
+		{
+			WritePixelColor( debug_Window -> RPort, 50+x, 400+y, 0xFFFF0000); 
+		}
+	}
+	else
+	{
+		printf("debug gfx window not open\n");
+	}
+}
+
+#endif

@@ -92,8 +92,9 @@ char *musicBell KITTENS_CMD_ARGS
 
 			api.audioPlayWave( localwave, len, 0xF );
 
-			api.debugDrawWave( localwave );
-
+#ifdef debug
+			debugDrawWave( localwave );
+#endif
 			free( localwave );
 		}
 	}
@@ -632,7 +633,9 @@ char *_musicSample( struct glueCommands *data, int nextToken )
 				{
 					offset = ((uint32_t *) (bank -> start + sizeof( uint16_t )));
 					sam = (struct sampleHeader *) ( (uint8_t *) bank -> start + offset[ sample ] );
+#ifdef obsolete
 					copy_sample_to_playback_voices(instance,sam,voices);
+#endif
 				}
 				else api.setError(22,data->tokenBuffer);
 			}
@@ -853,7 +856,7 @@ char *_musicSsave( struct glueCommands *data, int nextToken )
 			start = getStackNum( instance,__stack-1 );
 			end = getStackNum( instance,__stack );
 
-			write_file_start_end( channel, (char *) start, (char *) end );
+//			write_file_start_end( channel, (char *) start, (char *) end );
 
 			getchar();
 			break;
@@ -985,10 +988,12 @@ char *_musicWave( struct glueCommands *data, int nextToken )
 			waveId = getStackNum( instance,__stack-1  );
 			voices = getStackNum( instance,__stack );
 
+#ifdef obsolete
 			if ( apply_wave( waveId,  voices)  == false)
 			{
 				api.setError(178,data->tokenBuffer);
 			}
+#endif
 			popStack( instance,__stack - data->stack  );
 			return  NULL;
 
