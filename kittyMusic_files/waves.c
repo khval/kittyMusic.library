@@ -10,7 +10,6 @@ struct Envals
 	int duration;
 };
 
-
 struct Wave
 {
 	struct Envals envels[7];
@@ -22,7 +21,6 @@ struct Waves
 	unsigned int used;
 	unsigned int allocated;
 };
-
 
 struct Waves *newWaves( int size )
 {
@@ -96,7 +94,6 @@ void dumpWaves( struct Waves *waves)
 				wave -> envels[nn].volume, 
 				wave -> envels[nn].startDuration,
 				wave -> envels[nn].duration );
-
 		}
 	}
 }
@@ -116,7 +113,4 @@ void clean_up_waves( struct Waves *waves )
 		free (waves -> items);
 	}
 	free (waves);	
-	
 }
-
-
