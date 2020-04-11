@@ -61,18 +61,6 @@ struct sampleHeader *allocSample( int size )
 }
 
 void setEnval(struct wave *wave, int phase, int duration, int volume)
-{
-	int n;
-	int startDuration = 0;
-	if ((wave)&&(phase>-1)&&(phase<7))
-	{
-		for (n = 0; n < phase; n++) startDuration += wave->envels[n].duration;
-
-		wave -> envels[phase].volume = volume;
-		wave -> envels[phase].startDuration = startDuration;
-		wave -> envels[phase].duration = duration;
-	}
-}
 
 bool apply_wave(struct KittyInstance *instance,struct waves *waves, int waveId, int voices)
 {
