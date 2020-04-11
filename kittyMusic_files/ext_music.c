@@ -4,6 +4,7 @@
 #include <string.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include <math.h>
 
 #ifdef __amigaos4__
 #include <proto/exec.h>
@@ -23,6 +24,7 @@
 
 #include "kittyErrors.h"
 #include "ext_music.h"
+#include "context.h"
 
 #define kittyError instance->kittyError
 #define api instance -> api

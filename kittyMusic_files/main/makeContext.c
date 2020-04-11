@@ -13,14 +13,21 @@
  *
  */
 
+#include <stdlib.h>
+#include <stdint.h>
+#include <stdbool.h>
 
 #include <exec/exec.h>
 #include <proto/exec.h>
 #include <dos/dos.h>
 #include <exec/types.h>
-#include <libraries/kittycraft.h>
-#include <proto/kittyCraft.h>
+#include <libraries/kittymusic.h>
+#include <proto/kittyMusic.h>
 #include <stdarg.h>
+
+#include "wave.h"
+#include "context.h"
+
 
 /****** kittyCraft/main/makeContext ******************************************
 *
@@ -51,6 +58,15 @@
 
 void * _kittymusic_makeContext(struct kittyMusicIFace *Self)
 {
-  return NULL;
+	struct context *context;
+
+	context =  malloc(sizeof(struct context));
+	if (context)
+	{
+		bzero( context, sizeof(struct context) );
+		context -> sample_bank = 5;
+	}
+
+	return context;
 }
 

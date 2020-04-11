@@ -13,6 +13,9 @@
  *
  */
 
+#include <stdlib.h>
+#include <stdint.h>
+#include <stdbool.h>
 
 #include <exec/exec.h>
 #include <proto/exec.h>
@@ -51,7 +54,8 @@
 */
 
 void _kittymusic_FreeContext(struct kittyMusicIFace *Self,
-       void * table)
+       void * context)
 {
+	free(context);
 }
 
