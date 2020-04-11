@@ -1,23 +1,27 @@
 
 #include <stdlib.h>
 #include <stdint.h>
+#include <stdio.h>
+
 #include <stdbool.h>
 #include <string.h>
 #include <proto/dos.h>
 #include <math.h>
 
+#include <proto/retroMode.h>
+#include <amosKittens.h>
+
 #include "wave.h"
-#include "waves.h"
 
 #define harmonic(h,n,m) h * ((double) n) * 2.0f * M_PI / ((double) m) ;
 
 
-struct Wave *allocWave( int id, int size )
+struct wave *allocWave( int id, int size )
 {
-	struct Wave *data;
+	struct wave *data;
 
-	size =  sizeof(struct Wave) + size -1;
-	data = (struct Wave *) malloc( size );
+	size =  sizeof(struct wave) + size -1;
+	data = (struct wave *) malloc( size );
 
 	if (data)
 	{
@@ -27,7 +31,7 @@ struct Wave *allocWave( int id, int size )
 	return data;
 }
 
-bool delWave( struct Waves *waves, int id )
+bool delWave( struct waves *waves, int id )
 {
 	unsigned int n;
 
@@ -43,12 +47,12 @@ bool delWave( struct Waves *waves, int id )
 	return false;
 }
 
-void make_wave_bell(struct Waves *waves)
+void make_wave_bell(struct waves *waves)
 {
 	int n;
 	double r1,r3,r5;
 	int bytes = 256;
-	struct Wave *newWave = allocWave( 1, bytes );
+	struct wave *newWave = allocWave( 1, bytes );
 	char *data;
 
 	r1 = 0x0f;
@@ -79,7 +83,7 @@ void make_wave_bell(struct Waves *waves)
 	}
 }
 
-void setEnval(struct Wave *wave, int phase, int duration, int volume)
+void setEnval(struct wave *wave, int phase, int duration, int volume)
 {
 	int n;
 	int startDuration = 0;
@@ -92,3 +96,19 @@ void setEnval(struct Wave *wave, int phase, int duration, int volume)
 		wave -> envels[phase].duration = duration;
 	}
 }
+
+struct wave *getWave(struct waves *waves, int id)
+{
+	unsigned int n;
+
+	for (n=0;n<waves -> used;n++)
+	{
+		if (waves -> items[n] -> id == id )
+		{
+			return waves -> items[n] ;
+		}
+	}
+	return NULL;
+}
+
+
