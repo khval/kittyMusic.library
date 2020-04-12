@@ -451,19 +451,59 @@ char *musicSamBank KITTENS_CMD_ARGS
 	return tokenBuffer;
 }
 
+char *_musicSamLoopOff( struct glueCommands *data, int nextToken )
+{
+	struct KittyInstance *instance = data -> instance;
+	int args =__stack - data->stack +1;
+	proc_names_printf("%s:%s:%d\n",__FILE__,__FUNCTION__,__LINE__);
+
+	switch (args)
+	{
+		case 1:
+			api.audioSetSampleLoop( getStackNum( instance,__stack ), false );
+			return  NULL ;
+
+		default:
+			api.setError(22,data->tokenBuffer);
+	}
+
+	popStack( instance,__stack - data->stack );
+	return  NULL ;
+}
+
 char *musicSamLoopOff KITTENS_CMD_ARGS
 {
-	struct context *context = instance -> extensions_context[ instance -> current_extension ];
 	proc_names_printf("%s:%s:%d\n",__FILE__,__FUNCTION__,__LINE__);
-	api.audioSetSampleLoop(0x0);
+	stackCmdNormal( _musicSamLoopOff, tokenBuffer );
+	setStackNum( instance, 0xF ); 	// set default value
 	return tokenBuffer;
+}
+
+char *_musicSamLoopOn( struct glueCommands *data, int nextToken )
+{
+	struct KittyInstance *instance = data -> instance;
+	int args =__stack - data->stack +1;
+	proc_names_printf("%s:%s:%d\n",__FILE__,__FUNCTION__,__LINE__);
+
+	switch (args)
+	{
+		case 1:
+			api.audioSetSampleLoop(getStackNum( instance,__stack ), true );
+			return  NULL ;
+
+		default:
+			api.setError(22,data->tokenBuffer);
+	}
+
+	popStack( instance,__stack - data->stack );
+	return  NULL ;
 }
 
 char *musicSamLoopOn KITTENS_CMD_ARGS
 {
-	struct context *context = instance -> extensions_context[ instance -> current_extension ];
 	proc_names_printf("%s:%s:%d\n",__FILE__,__FUNCTION__,__LINE__);
-	api.audioSetSampleLoop(0xF);	// activate loops on channel 0,1,2,3
+	stackCmdNormal( _musicSamLoopOn, tokenBuffer );
+	setStackNum( instance, 0xF ); 	// set default value
 	return tokenBuffer;
 }
 
