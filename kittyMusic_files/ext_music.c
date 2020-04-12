@@ -455,7 +455,7 @@ char *musicSamLoopOff KITTENS_CMD_ARGS
 {
 	struct context *context = instance -> extensions_context[ instance -> current_extension ];
 	proc_names_printf("%s:%s:%d\n",__FILE__,__FUNCTION__,__LINE__);
-	context -> sample_loop = false;
+	api.audioSetSampleLoop(0x0);
 	return tokenBuffer;
 }
 
@@ -463,7 +463,7 @@ char *musicSamLoopOn KITTENS_CMD_ARGS
 {
 	struct context *context = instance -> extensions_context[ instance -> current_extension ];
 	proc_names_printf("%s:%s:%d\n",__FILE__,__FUNCTION__,__LINE__);
-	context -> sample_loop = true;
+	api.audioSetSampleLoop(0xF);	// activate loops on channel 0,1,2,3
 	return tokenBuffer;
 }
 
