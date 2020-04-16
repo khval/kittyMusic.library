@@ -10,9 +10,6 @@ The license chosen, is MIT this so people can contribute to the extension, as we
 
 **work in progress.**
 
-This extension is not enabled by default to enable edit, 
-amosKittens.cpp file on line 1334, and recompile.
-
 Only the commands that have a description is implemented.
 
 https://github.com/khval/kittyMusic.library/blob/master/music_commands.md
