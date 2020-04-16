@@ -1,4 +1,4 @@
-# kittyCraft.library
+# kittyMusic.library
 Extension for AmosKittens
 
 This is a complete reimplantation of “AmosPro Msuic extension”, original was written in assembler, 
