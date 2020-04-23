@@ -266,14 +266,18 @@ char *musicMubase KITTENS_CMD_ARGS
 char *musicMusic KITTENS_CMD_ARGS
 {
 	printf("%s:%s:%d\n",__FILE__,__FUNCTION__,__LINE__);
+#ifdef strict_rules_yes
 	api.setError(22, tokenBuffer);
+#endif
 	return tokenBuffer;
 }
 
 char *musicMusicOff KITTENS_CMD_ARGS
 {
 	printf("%s:%s:%d\n",__FILE__,__FUNCTION__,__LINE__);
+#ifdef strict_rules_yes
 	api.setError(22, tokenBuffer);
+#endif
 	return tokenBuffer;
 }
 
@@ -933,42 +937,54 @@ char *musicTalkStop KITTENS_CMD_ARGS
 char *musicTempo KITTENS_CMD_ARGS
 {
 	printf("%s:%s:%d\n",__FILE__,__FUNCTION__,__LINE__);
+#ifdef strict_rules_yes
 	api.setError(22, tokenBuffer);
+#endif
 	return tokenBuffer;
 }
 
 char *musicTrackLoad KITTENS_CMD_ARGS
 {
 	printf("%s:%s:%d\n",__FILE__,__FUNCTION__,__LINE__);
+#ifdef strict_rules_yes
 	api.setError(22, tokenBuffer);
+#endif
 	return tokenBuffer;
 }
 
 char *musicTrackLoopOf KITTENS_CMD_ARGS
 {
 	printf("%s:%s:%d\n",__FILE__,__FUNCTION__,__LINE__);
+#ifdef strict_rules_yes
 	api.setError(22, tokenBuffer);
+#endif
 	return tokenBuffer;
 }
 
 char *musicTrackLoopOn KITTENS_CMD_ARGS
 {
 	printf("%s:%s:%d\n",__FILE__,__FUNCTION__,__LINE__);
+#ifdef strict_rules_yes
 	api.setError(22, tokenBuffer);
+#endif
 	return tokenBuffer;
 }
 
 char *musicTrackPlay KITTENS_CMD_ARGS
 {
 	printf("%s:%s:%d\n",__FILE__,__FUNCTION__,__LINE__);
+#ifdef strict_rules_yes
 	api.setError(22, tokenBuffer);
+#endif
 	return tokenBuffer;
 }
 
 char *musicTrackStop KITTENS_CMD_ARGS
 {
 	printf("%s:%s:%d\n",__FILE__,__FUNCTION__,__LINE__);
+#ifdef strict_rules_yes
 	api.setError(22, tokenBuffer);
+#endif
 	return tokenBuffer;
 }
 

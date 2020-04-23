@@ -17,7 +17,10 @@ RM     = delete
 
 # Change these as required
 OPTIMIZE = -O3
-DEBUG    = # -gstabs -DDEBUG
+
+OPS    = -Ddebug_yes
+OPS += -Dstrict_rules_no
+
 CFLAGS   = -Wall $(OPTIMIZE) $(DEBUG)
 
 INC = -I/SDK/include/AmosKittens -I../ -I./
@@ -56,13 +59,13 @@ SRCS = init.c
 OBJS = $(main_SRCS:.c=.o)  $(SRCS:.c=.o)
 # Rules for building
 $(TARGET): $(OBJS)
-	$(CC) $(LINK) -nostartfiles -o $(TARGET) $(OBJS) $(LIBS)
+	$(CC) $(LINK) -nostartfiles $(OPTS) -o $(TARGET) $(OBJS) $(LIBS)
 
 %.o:		%.c 
-	gcc  -Wall -O3  $(INC) -c  -D__USE_INLINE__ -D__no_stdlib__ $(@:.o=.c) -o $@
+	gcc  -Wall -O3  $(INC) -c  $(OPTS) -D__USE_INLINE__ -D__no_stdlib__ $(@:.o=.c) -o $@
 
 init.o:		init.c 
-	gcc  -Wall -O3  $(INC) -c  $(@:.o=.c) -o $@
+	gcc  -Wall -O3  $(INC) -c $(OPTS) $(@:.o=.c) -o $@
 
 .PHONY: clean
 clean:
