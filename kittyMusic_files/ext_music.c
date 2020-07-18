@@ -541,7 +541,7 @@ char *_musicSamPlay( struct glueCommands *data, int nextToken )
 
 	popStack( instance,__stack - data->stack );
 
-	bank = api.findBank( context -> sample_bank );
+	bank = api.findBankById( context -> sample_bank );
 	if (bank)
 	{
 		uint16_t samples = *((uint16_t *) bank -> start);
@@ -668,7 +668,7 @@ char *_musicSample( struct glueCommands *data, int nextToken )
 
 			printf("%d,%d\n",sample, voices);
 
-			bank = api.findBank( context -> sample_bank );
+			bank = api.findBankById( context -> sample_bank );
 			if (bank)
 			{
 				uint16_t samples = *((uint16_t *) bank -> start);
