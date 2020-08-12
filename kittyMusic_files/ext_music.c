@@ -903,20 +903,26 @@ char *_musicSsave( struct glueCommands *data, int nextToken )
 {
 	struct KittyInstance *instance = data -> instance;
 	int args =__stack - data->stack +1;
-	int channel,start,end;
 
 	printf("%s:%s:%d\n",__FILE__,__FUNCTION__,__LINE__);
 
 	switch (args)
 	{
 		case 3:
-			channel = getStackNum( instance,__stack-2 );
-			start = getStackNum( instance,__stack-1 );
-			end = getStackNum( instance,__stack );
+			{
+				int fileChannel = getStackNum( instance,__stack-2 );
+				char *start = getStackNum( instance,__stack-1 );
+				char *end = getStackNum( instance,__stack );
 
-//			write_file_start_end( channel, (char *) start, (char *) end );
+				FILE *fd;
+				ULONG r;
 
-			getchar();
+				if ((fileChannel>0)&&(fileChannel<11))
+				{
+					fd = instance -> files[fileChannel-1].fd ;
+					if (fd) r = fwrite( start,1,end - start, fd );
+				}
+			}
 			break;
 
 		default:
