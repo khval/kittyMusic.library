@@ -866,14 +866,28 @@ char *_musicSload( struct glueCommands *data, int nextToken )
 
 	switch (args)
 	{
-		case 1:
-			voices = getStackNum( instance,__stack );
-			api.audioDeviceFlush(voices);
-			return NULL;
+		case 3:
+			{
+				int fileChannel = getStackNum( instance,__stack -2 );
+				char *address = (char *) getStackNum( instance,__stack -1 );
+				int length = getStackNum( instance,__stack );
+
+				FILE *fd;
+				ULONG r;
+
+				if ((fileChannel>0)&&(fileChannel<11))
+				{
+					fd = instance -> files[fileChannel-1].fd ;
+					if (fd) r = fread( address, 1, length, fd );
+				}
+			}
+			break;
+
+		default:
+			api.setError(22,data->tokenBuffer);
 			break;
 	}
 
-	api.setError(22,data->tokenBuffer);
 	popStack( instance,__stack - data->stack );
 	return  NULL ;
 }
