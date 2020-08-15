@@ -67,6 +67,9 @@ $(TARGET): $(OBJS)
 init.o:		init.c 
 	gcc  -Wall -O3  $(INC) -c $(OPTS) $(@:.o=.c) -o $@
 
+main/makeContext.o:	debug.h	context.h	main/makeContext.c 
+	gcc  -Wall -O3  $(INC) -c  $(@:.o=.c) -o $@
+
 .PHONY: clean
 clean:
 	$(RM) $(TARGET) $(OBJS)

@@ -26,13 +26,12 @@
 #include "ext_music.h"
 #include "wave.h"
 #include "context.h"
+#include "debug.h"
 
 #define kittyError instance->kittyError
 #define api instance -> api
 #define last_var instance -> last_var
 #define cmdTmp instance -> cmdTmp
-
-#define proc_names_printf printf
 
 void setEnval(struct wave *wave, int phase, int duration, int volume);
 
