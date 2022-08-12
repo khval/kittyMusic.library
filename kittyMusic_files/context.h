@@ -8,5 +8,8 @@ struct context
 #ifdef debug
 	struct Window *debug_Window = NULL;;
 #endif
+
+	struct Module *module;
+
 };
 

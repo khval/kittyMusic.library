@@ -53,9 +53,12 @@
 *
 */
 
+extern void free_mod( struct context *context );
+
 void _kittymusic_FreeContext(struct kittyMusicIFace *Self,
        void * context)
 {
+	free_mod(context);
 	free(context);
 }
 

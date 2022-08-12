@@ -1,6 +1,9 @@
-#define VERSION		53
-#define REVISION	1
-#define DATE		"23.3.2020"
-#define VERS		"kittyMusic.library 53.1"
-#define VSTRING		"kittyMusic.library 53.1 (23.3.2020)\r\n"
-#define VERSTAG		"\0$VER: kittyMusic.library 53.1 (23.3.2020)"
+
+#define VERSION 1
+#define REVISION 1
+
+#define VER "1.1"
+#define DATE		"7.8.2022"
+#define VERS		"kittyMusic.library " VER
+#define VSTRING		"kittyMusic.library " VER " (" DATE ")\r\n"
+#define VERSTAG		"\0$VER: kittyMusic.library " VER " (" DATE ")"

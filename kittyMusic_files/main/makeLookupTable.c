@@ -68,8 +68,6 @@ char * _kittymusic_makeLookupTable(struct kittyMusicIFace *Self)
 			AVT_ClearWithValue, 0,
 			TAG_END );
 
-	Printf("makeLookupTable\n");
-
 	for (cmd=AMOSPro_Music;cmd -> fn;cmd++)
 	{
 		*((char *(**) KITTENS_CMD_ARGS) (ptr + cmd -> token)) = cmd -> fn;

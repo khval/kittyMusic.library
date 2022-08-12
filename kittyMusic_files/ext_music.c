@@ -28,6 +28,8 @@
 #include "context.h"
 #include "debug.h"
 
+#include <proto/ptreplay.h>
+
 #define kittyError instance->kittyError
 #define api instance -> api
 #define last_var instance -> last_var
@@ -36,6 +38,9 @@
 void setEnval(struct wave *wave, int phase, int duration, int volume);
 
 extern struct sampleHeader *allocSample( int size );
+
+uint32 file_size(FILE *fd);
+void free_mod( struct context *context );
 
 double noteFreq[12] = {
 		261.63,
@@ -962,12 +967,54 @@ char *musicTempo KITTENS_CMD_ARGS
 	return tokenBuffer;
 }
 
+char *_musicTrackLoad(  struct glueCommands *data, int nextToken )
+{
+	struct KittyInstance *instance = data -> instance ;
+	int args = instance -> stack - data -> stack  +1;
+	struct stringData *file_name;
+	struct kittyBank *bank = NULL;
+	int bank_num = 0;
+	int size;
+	FILE *fd;
+
+	switch (args)
+	{
+		case 2:
+			file_name = getStackString( instance, instance_stack-1);
+			bank_num = getStackNum( instance, instance_stack);
+	
+			fd = fopen( &file_name -> ptr , "r");
+			if (fd)
+			{
+				size = file_size(fd);
+				bank = data -> api.reserveAs( 0, bank_num , size, "Module", NULL );
+				if (bank)
+				{
+					if (bank -> start)
+					{
+						printf("loaded: %d\n",
+							fread( bank -> start,size,1,fd)
+							);
+					}
+				}
+				fclose(fd);
+			}
+			break;
+
+		default:
+			printf("setting error: 22\n");
+			api.setError(22, data->tokenBuffer);	// wrong number of args.
+			popStack( instance, instance_stack - data->stack );
+			return NULL;
+	}
+
+	popStack( instance, instance_stack - data->stack );
+	return NULL;
+}
+
 char *musicTrackLoad KITTENS_CMD_ARGS
 {
-	printf("%s:%s:%d\n",__FILE__,__FUNCTION__,__LINE__);
-#ifdef strict_rules_yes
-	api.setError(22, tokenBuffer);
-#endif
+	stackCmdNormal( _musicTrackLoad, tokenBuffer );
 	return tokenBuffer;
 }
 
@@ -989,21 +1036,81 @@ char *musicTrackLoopOn KITTENS_CMD_ARGS
 	return tokenBuffer;
 }
 
+char *_musicTrackPlay(  struct glueCommands *data, int nextToken )
+{
+	struct KittyInstance *instance = data -> instance ;
+	int args = instance -> stack - data -> stack  +1;
+	struct context *context = instance -> extensions_context[ instance -> current_extension ];
+	struct kittyBank *bank = NULL;
+	int bank_num = 0;
+
+	switch (args)
+	{
+		case 1:
+			{
+				int error = 36;	// default error.
+
+				bank_num = getStackNum( instance, instance_stack);
+				bank = data -> api.findBankById( bank_num );
+				free_mod( context );
+
+				if (bank) if (bank -> start)
+				{
+					context -> module = PTSetupMod( bank -> start );
+					if (context -> module)
+					{
+						 PTPlay( context -> module );
+						error = 0; // no error found..
+					}
+				}
+
+				if (error)  api.setError(error, data->tokenBuffer);	// wrong number of args.
+			}
+			break;
+
+		default:
+			api.setError(22, data->tokenBuffer);	// wrong number of args.
+			popStack( instance, instance_stack - data->stack );
+			return NULL;
+	}
+
+	popStack( instance, instance_stack - data->stack );
+	return NULL;
+}
+
 char *musicTrackPlay KITTENS_CMD_ARGS
 {
 	printf("%s:%s:%d\n",__FILE__,__FUNCTION__,__LINE__);
-#ifdef strict_rules_yes
-	api.setError(22, tokenBuffer);
-#endif
+	stackCmdNormal( _musicTrackPlay, tokenBuffer );
 	return tokenBuffer;
+}
+
+char *_musicTrackStop(  struct glueCommands *data, int nextToken )
+{
+	struct KittyInstance *instance = data -> instance ;
+	int args = instance -> stack - data -> stack  +1;
+	struct context *context = instance -> extensions_context[ instance -> current_extension ];
+
+	switch (args)
+	{
+		case 0:
+			if (context -> module) PTStop( context -> module );
+			break;
+
+		default:
+			printf("setting error: 22\n");
+			api.setError(22, data->tokenBuffer);	// wrong number of args.
+			popStack( instance, instance_stack - data->stack );
+			return NULL;
+	}
+
+	popStack( instance, instance_stack - data->stack );
+	return NULL;
 }
 
 char *musicTrackStop KITTENS_CMD_ARGS
 {
-	printf("%s:%s:%d\n",__FILE__,__FUNCTION__,__LINE__);
-#ifdef strict_rules_yes
-	api.setError(22, tokenBuffer);
-#endif
+	stackCmdNormal( _musicTrackStop, tokenBuffer );
 	return tokenBuffer;
 }
 
@@ -1089,3 +1196,22 @@ char *musicWave KITTENS_CMD_ARGS
 	return tokenBuffer;
 }
 
+uint32 file_size(FILE *fd)
+{
+	uint32 size;
+	fseek(fd , 0, SEEK_END );			
+	size = ftell(fd);
+	fseek(fd, 0, SEEK_SET );
+	return size;
+}
+
+void free_mod( struct context *context )
+{
+	if ( context -> module )
+	{
+		PTStop( context -> module );
+		Delay(2);	// dangures!!!
+		PTFreeMod(context -> module );
+		context -> module = NULL;
+	}
+}

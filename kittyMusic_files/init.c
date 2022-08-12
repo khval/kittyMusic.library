@@ -38,9 +38,12 @@ struct ExecIFace *IExec = NULL;
 struct NewlibIFace * INewlib = NULL;
 struct retroIFace * IRetroMode = NULL;
 struct DOSIFace *IDOS = NULL;
+struct PtrePlayIFace *IPTReplay = NULL;
+
 struct Library *NewLibBase = NULL;
 struct Library *RetroModeBase = NULL;
 struct Library *DOSBase = NULL;
+struct Library *PTReplayBase = NULL;
 
 #define close_lib(b,i)			\
 	if (b) IExec->CloseLibrary(b);	\
@@ -50,6 +53,7 @@ struct Library *DOSBase = NULL;
 void close_libs()
 {
 	struct ExecIFace *IExec = (struct ExecIFace *)(*(struct ExecBase **)4)->MainInterface;
+	close_lib( PTReplayBase, IPTReplay);
 	close_lib( DOSBase, IDOS);
 	close_lib( NewLibBase, INewlib);
 	close_lib( RetroModeBase, IRetroMode);
@@ -79,7 +83,7 @@ BOOL init()
 	if ( ! open_lib( "dos.library", 53L , "main", 1, &DOSBase, (struct Interface **) &IDOS  ) ) return FALSE;
 	if ( ! open_lib( "newlib.library", 53L , "main", 1, &NewLibBase, (struct Interface **) &INewlib  ) ) return FALSE;
 	if ( ! open_lib( "retromode.library", 1L , "main", 1, &RetroModeBase, (struct Interface **) &IRetroMode  ) ) return FALSE;
-
+	if ( ! open_lib( "ptreplay.library", 7 , "main", 1, &PTReplayBase, (struct Interface **) &IPTReplay  ) ) return FALSE;
 	return TRUE;
 }
 
