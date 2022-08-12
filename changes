@@ -1,0 +1,11 @@
+
+12.08.2022 Version 1.1: 
+	Now uses ptreplay.library / ptplay.library
+	implemeted:
+	Track Load file$,[bank]
+	Track Play [bank]
+	Track Stop
+	Not return error on nyi command vumeter
+
+23.03.2020 Ferst version (53.1)
+	V53 is default for idltool
