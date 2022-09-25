@@ -1148,29 +1148,57 @@ char *musicVolume KITTENS_CMD_ARGS
 	return tokenBuffer;
 }
 
+int cVol[4]={63,63,63,63};
+
 char *_musicVumeter( struct glueCommands *data, int nextToken )
 {
 	struct KittyInstance *instance = data -> instance;
 	int args =__stack - data->stack +1;
+	struct context *context = instance -> extensions_context[ instance -> current_extension ];
+	int rVol =0;
 
-	printf("%s:%s:%d\n",__FILE__,__FUNCTION__,__LINE__);
+	proc_names_printf("%s:%s:%d\n",__FILE__,__FUNCTION__,__LINE__);
 
 	switch (args)
 	{
 		case 1:
-			printf("NYI: Vumeter\n");
-			return  NULL ;
+			{
+				int channel = getStackNum( instance, instance_stack);
+
+				if ( context -> module)
+				{
+					int32 pos=PTSongPos( context -> module);
+					int32 PatternNum=PTSongPattern( context -> module, pos);
+					int32 rowNum = PTPatternPos( context -> module );
+					char *RowData=PTPatternData( context -> module, PatternNum, rowNum);
+
+					if (RowData)
+					{
+						char *cData = RowData + (channel << 2);
+						//cmd = CData[1];
+						rVol = cData[0] ? cVol[ channel ] : 0;		// check if we have a instrument...
+					}
+				}
+			}
+			break;
+
+		default:
+
+			api.setError(22,data->tokenBuffer);
 			break;
 	}
 
-	api.setError(22,data->tokenBuffer);
 	popStack( instance,__stack - data->stack );
+
+//	rVol = 63;
+
+	setStackNum( instance, rVol);
 	return  NULL ;
 }
 
 char *musicVumeter KITTENS_CMD_ARGS
 {
-	printf("%s:%s:%d\n",__FILE__,__FUNCTION__,__LINE__);
+	proc_names_printf("%s:%s:%d\n",__FILE__,__FUNCTION__,__LINE__);
 	stackCmdParm( _musicVumeter, tokenBuffer );
 	return tokenBuffer;
 }
